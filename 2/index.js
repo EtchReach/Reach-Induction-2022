@@ -6,11 +6,11 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   const cookie = req.cookies["isLoggedIn"];
-  if (cookie === "1") {    
+  if (cookie === "1") {
     res.sendFile(path.join(__dirname, "views", "success.html"));
   } else {
     res.cookie('isLoggedIn', '0', { expires: new Date(Date.now() + 900000), httpOnly: true });
@@ -30,6 +30,15 @@ app.post("/admin", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "failure.html"));
   }
 });
+
+app.get("/admin", (req, res) => {
+  const cookie = req.cookies["isLoggedIn"];
+  if (cookie === "1") {
+    res.sendFile(path.join(__dirname, "views", "success.html"));
+  } else {
+    res.sendFile(path.join(__dirname, "views", "failure.html"));
+  }
+})
 
 app.use(express.static('views'));
 
